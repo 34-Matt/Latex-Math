@@ -6,6 +6,7 @@ import urllib
 
 # Import Photo
 path = r'Z:\caseyduncan\Casey Duncan\CSM Grad School Work\2019\Fall\CSCI 575B - Machine Learning\ML Project\Data\Data - Equations\eqn_test.jpg'
+#path = r'Z:\caseyduncan\Casey Duncan\CSM Grad School Work\2019\Fall\CSCI 575B - Machine Learning\ML Project\Data\Data - Equations\eqn_test2.jpg'
 img = cv2.imread(path)
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) # Convert to gray
 
@@ -50,7 +51,6 @@ for i in chars_bb_new:
 	if i not in chars_bb:
 		chars_bb.append(i)
 
-chars_bb_new = []
 # Order Characters from left to right
 chars_bb.sort()
 
