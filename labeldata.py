@@ -4,6 +4,8 @@ import imageio
 import csv
 import sys
 from sklearn.model_selection import train_test_split
+import cv2
+import pickle
 
 def createDict(images_path):
 	#images_path = './extracted_images/' 
@@ -62,7 +64,7 @@ def loadDataset(file_name1,file_name2,rate = 0.2): #file_name1 location of all c
 	ds1 = os.listdir(file_name1)
 	file_count = sum([len(files) for r, d, files in os.walk(file_name1)])
 	counter = 0
-	X = np.empty((0,45,45))
+	X = np.empty((0,45,45),dtype=np.uint8)
 	Y = []
 	for d in ds1:
 		folder = os.path.join(file_name1,d)
@@ -70,19 +72,20 @@ def loadDataset(file_name1,file_name2,rate = 0.2): #file_name1 location of all c
 		d = d.lower()
 		for d2 in ds2:
 			filei = os.path.join(folder,d2)
-			image = imageio.imread(filei)
+			image = cv2.imread(filei)
+			image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY) # Convert to gray
 			npi = np.asarray(image).reshape(45,45) #might need to change
-			X = np.append(X, [npi],axis = 0) #might need to change 
+			X = np.append(X, [npi],axis = 0) #might need to change
 			Y = np.append(Y,dict[d])
 			counter += 1
 			output_string = f"Image File {counter} of {file_count}\n"
 			sys.stdout.write(output_string)
 			sys.stdout.flush()
-	x_train,x_test,y_train,y_test = train_test_split(X,Y,test_size = rate)	
-	return x_train, x_test, y_train, y_test 
+	#x_train,x_test,y_train,y_test = train_test_split(X,Y,test_size = rate)	
+	return X, Y
 
 if __name__ == '__main__':
-	path = 'C:/Users/cdunc/Documents/CSM Grad School Work/2019/Fall/CSCI 575B - Machine Learning/Group Project/Data/Single Characters/Removed Duplicates'
+	path = 'C:/Users/cdunc/Documents/CSM Grad School Work/2019/Fall/CSCI 575B - Machine Learning/Group Project/Data/Single Characters/Removed Duplicates & Symbols'
 	createDict(path)
 	
 	dict_name = 'LabelDict.csv'
@@ -90,4 +93,7 @@ if __name__ == '__main__':
 	#for key,val in dict.items():
 	#	print("{} : {}".format(key,val))
 
-	x_train, x_test, y_train, y_test = loadDataset(path,dict_name,rate = 0.2)
+	#x_train, x_test, y_train, y_test = loadDataset(path,dict_name,rate = 0.2)
+	X, Y = loadDataset(path,dict_name,rate = 0.2)
+	with open('X_Y_Data.pickle', 'wb') as f:
+		pickle.dump([X, Y], f)
