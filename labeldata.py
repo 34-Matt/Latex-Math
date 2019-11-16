@@ -65,7 +65,7 @@ def loadDataset(file_name1,file_name2,rate = 0.2): #file_name1 location of all c
 	file_count = sum([len(files) for r, d, files in os.walk(file_name1)])
 	counter = 0
 	X = np.empty((0,45,45),dtype=np.uint8)
-	Y = []
+	Y = np.empty((0,1),dtype=np.uint8) 
 	for d in ds1:
 		folder = os.path.join(file_name1,d)
 		ds2 = os.listdir(folder)
