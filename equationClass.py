@@ -7,42 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1hXw-QNTfLErq0eM4aIdAPNhi4c0dB2y7
 """
 
-specialCharacters = {1: "\alpha " 
-                    2: "\beta "
-                    3: "\gamma "
-                    4: "\delta "
-                    5: "\epsilon "
-                    6: "\zeta "
-                    7: "\eta "
-                    8: "\varepsilon "
-                    9: "\theta "
-                    10: "\iota "
-                    11: "\kappa "
-                    12: "\vartheta "
-                    13: "\lambda "
-                    14: "\mu "
-                    15: "\nu "
-                    16: "\xi "
-                    17: "\pi "
-                    18: "\ro "
-                    19: "\sigma "
-                    20: "\tau "
-                    21: "\upsilon "
-                    22: "\phi "
-                    23: "\chi "
-                    24: "\psi "
-                    25: "\omega "
-                    26: "\Gamma "
-                    27: "\Delta "
-                    28: "\Theta "
-                    29: "\Lambda "
-                    30: "\Xi "
-                    31: "\Pi "
-                    32: "\Sigma "
-                    33: "\Upsilon "
-                    34: "\Phi "
-                    35: "\Psi "
-                    36: "\Omega "}
+from labeldata import loadDict_BA
 
 class equation:
   """A class to store the output of a CNN determining an equation of variable that can be printed to LaTeX code
@@ -58,6 +23,7 @@ class equation:
     assert len(vals) == len(states),'vals and states should be the same size'
     self.terms = vals
     self.states = states
+    characters = loadDict_BA("LabelDict.csv")
   
   def appendTerm(self, val, state):
     """Append another term onto the end of an existing equation
@@ -77,7 +43,10 @@ class equation:
     
     latex = "$"
     prevState = 0
-    for term,state in zip(self.terms, self.states):
+    for index,state in zip(self.terms, self.states):
+      # Requires loading of precreated characters array from labeldata
+      term = characters[index]
+      
       # Handle sub/superscript with state
       if prevState != state:
         # Only change states if current state is different than previous
@@ -100,11 +69,9 @@ class equation:
             latex = latex + "}_{"
           
       # Print out term
-      if term in specialCharacters:
+      if len(term) > 1 || term == "{" || term == "}":
         # If a special character add the corresponding LaTeX shortcut
-        latex = latex + specialCharacters[term]
-      else:
-        # If a normal character add the string
-        latex = latex + chr(term)
+        latex = latex + "\\"
+      latex = latex + term
       prevState = state
     return latex + "$"
