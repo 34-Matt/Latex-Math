@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflowimport keras
+from tensorflow import keras
 from tensorflow.keras.models import Sequential # For constructing model
 from tensorflow.keras.layers import Dense, Dropout, Flatten # Layer cores
 from tensorflow.keras.layers import Conv2D, MaxPooling2D # CNN layers
@@ -14,7 +14,8 @@ def loadData(fileName,size=0.2):
 
     with open(fileName, 'rb') as f:
         X, Y = pickle.load(f)
-        
+    
+    X=X.reshape(-1,45,45,1)
     X_train, X_test, y_train, y_test = train_test_split(X,Y,test_size = size)
     return X_train, X_test, y_train, y_test
 
@@ -35,6 +36,10 @@ def createModel(size):
     model.add(Dense(120, activation='relu')) #120 by 1
     model.add(Dropout(0.2))
     model.add(Dense(82, activation='softmax')) # 82 by 1 (only english, digits, and symbols)
+    
+    model.compile(optimizer='adam',
+                loss='sparse_categorical_crossentropy',
+                metrics=['accuracy'])
     
     return model
     
@@ -60,7 +65,7 @@ def trainModel(model, X_train, y_train, X_test, y_test, ep=50):
         
     return model
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     X_train, X_test, y_train, y_test = loadData('X_Y_Data.pickle')
     model = createModel(X_train.shape[1:])
     model = trainModel(model, X_train, y_train, X_test, y_test)
