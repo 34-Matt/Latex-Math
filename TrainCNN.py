@@ -12,7 +12,7 @@ import os
 
 def loadData(fileName,size=0.2):
 
-    with open('X_Y_Data.pickle', 'rb') as f:
+    with open(fileName, 'rb') as f:
         X, Y = pickle.load(f)
         
     X_train, X_test, y_train, y_test = train_test_split(X,Y,test_size = size)
@@ -59,3 +59,8 @@ def trainModel(model, X_train, y_train, X_test, y_test, ep=50):
         verbose=0)
         
     return model
+
+if __name__ = "__main__":
+    X_train, X_test, y_train, y_test = loadData('X_Y_Data.pickle')
+    model = createModel(X_train.shape[1:])
+    model = trainModel(model, X_train, y_train, X_test, y_test)
