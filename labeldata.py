@@ -50,13 +50,22 @@ def createDict(images_path):
 
 	file.close()
 
-def loadDict(file_name):
+def loadDict_AB(file_name):
 	dict = {}
 	with open(file_name) as file:
 		readCSV = csv.reader(file)
 		for row in readCSV:
 			if len(row) > 0:
 				dict[row[0]] = int(row[1])
+	return dict
+    
+def loadDict_BA(file_name):
+	dict = {}
+	with open(file_name) as file:
+		readCSV = csv.reader(file)
+		for row in readCSV:
+			if len(row) > 0:
+				dict[row[1]] = int(row[0])
 	return dict
 
 def loadDataset(file_name1,file_name2,rate = 0.2): #file_name1 location of all characters, file_name2 dict
