@@ -1,4 +1,4 @@
-from numpy import max as npMax
+import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import Sequential # For constructing model
@@ -26,17 +26,20 @@ def createModel(input,output):
     model = Sequential()
 
     # Images are 48 by 48
-    model.add(Conv2D(32, (3,3), activation='relu', input_shape=input)) #46 by 46
-    model.add(Conv2D(32, (3,3), activation='relu')) #44 by 44
+    model.add(Conv2D(32, (3,3), activation='relu', input_shape=input)) #46 by 46 by 32
+    model.add(Conv2D(64, (5,5), activation='relu')) #42 by 42 by 64
+    model.add(MaxPooling2D((3,3),3)) #14 by 14 by 64
+    model.add(Conv2D(80, (7,7), activation='relu')) #8 by 8 by 80
+    model.add(MaxPooling2D((3,3),3)) #4 by 4 by 80
     model.add(Dropout(rate=0.15))
-    model.add(Flatten()) #1964 by 1
+    model.add(Flatten()) #5120 by 1
     model.add(Dense(500, activation='relu')) #500 by 1
     model.add(Dropout(0.2))
     model.add(Dense(250, activation='relu')) #250 by 1
     model.add(Dropout(0.2))
     model.add(Dense(120, activation='relu')) #120 by 1
     model.add(Dropout(0.2))
-    model.add(Dense(output, activation='softmax'))
+    model.add(Dense(output, activation='softmax')) # 82 by 1 (only english, digits, and symbols)
     
     model.compile(optimizer='adam',
                 loss='sparse_categorical_crossentropy',
@@ -68,5 +71,5 @@ def trainModel(model, X_train, y_train, X_test, y_test, ep=50):
 
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test = loadData('X_Y_Data.pickle')
-    model = createModel(X_train.shape[1:],npMax(y_train))
+    model = createModel(X_train.shape[1:],np.max(y_train))
     model = trainModel(model, X_train, y_train, X_test, y_test)
