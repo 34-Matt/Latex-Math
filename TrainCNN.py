@@ -31,14 +31,17 @@ def createModel(input,output):
     model.add(MaxPooling2D((3,3),3)) #14 by 14 by 64
     model.add(Conv2D(80, (7,7), activation='relu')) #8 by 8 by 80
     model.add(MaxPooling2D((3,3),3)) #4 by 4 by 80
-    model.add(Dropout(rate=0.15))
+    model.add(Dropout(rate=0.1))
     model.add(Flatten()) #5120 by 1
+    model.add(Dense(2000, activation='relu')) #2000 by 1
+    model.add(Dropout(0.2))
+    model.add(Dense(1000, activation='relu')) #1000 by 1
+    model.add(Dropout(0.15))
     model.add(Dense(500, activation='relu')) #500 by 1
-    model.add(Dropout(0.2))
+    model.add(Dropout(0.15))
     model.add(Dense(250, activation='relu')) #250 by 1
-    model.add(Dropout(0.2))
+    model.add(Dropout(0.1))
     model.add(Dense(120, activation='relu')) #120 by 1
-    model.add(Dropout(0.2))
     model.add(Dense(output, activation='softmax')) # 82 by 1 (only english, digits, and symbols)
     
     model.compile(optimizer='adam',
@@ -47,7 +50,13 @@ def createModel(input,output):
     
     return model
     
-def trainModel(model, X_train, y_train, X_test, y_test, ep=50):
+def loadLatestModel(input,output):
+    model = createModel(input,output) #Currently (45,45,1),65
+    latestPath = tf.train.latest_checkpoint('training')
+    model.load_weights(latestPath)
+    return model
+    
+def trainModel(model, X_train, y_train, X_test, y_test, ep=50, initial=0):
 
     checkpoint_path = "training/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
@@ -58,18 +67,20 @@ def trainModel(model, X_train, y_train, X_test, y_test, ep=50):
         save_weights_only=True,
         period = 2)
         
-    model.save_weights(checkpoint_path.format(epoch=0))
+    model.save_weights(checkpoint_path.format(epoch=initial))
     
     model.fit(X_train,
         y_train,
+        batch_size = 100,
         epochs=ep,
         callbacks=[cp_callback],
         validation_data=(X_test,y_test),
-        verbose=0)
+        verbose=2,
+        initial_epoch=initial)
         
     return model
 
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test = loadData('X_Y_Data.pickle')
     model = createModel(X_train.shape[1:],np.max(y_train))
-    model = trainModel(model, X_train, y_train, X_test, y_test)
+    model = trainModel(model, X_train, y_train, X_test, y_test, 10000)
