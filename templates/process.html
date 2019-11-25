@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Image to Latex</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+</head>
+<body>
+    <h1>Image to Latex</h1>
+
+    <div>
+        <label for="image_upload">Uploaded image</label>
+        <input type="file" id="image_upload">
+    </div>
+
+    <div>
+        <button id="predict">Convert</button>
+    </div>
+
+    <img id="my_img" alt="Uploaded image" width="224" height="56" />
+
+    
+    <p id="message"></p>
+    
+    <script>
+    document.querySelector("#image_upload").addEventListener("change", (e)=>{
+        // https://stackoverflow.com/a/27002935/818687 
+        document.querySelector('#my_img').src = window.URL.createObjectURL(e.target.files[0])
+    })
+    document.querySelector("#predict").addEventListener("click", ()=>{
+        // Get the values to send to the API
+        
+        // Create URL
+        var url = new URL("/run", window.location.origin)
+        var data = new FormData()
+        data.append('file', document.querySelector("#image_upload").files[0])
+        // Get API response
+        fetch(url, {
+            method: "POST",
+            body: data
+        }).then((response)=>{
+            console.log(response)
+            return response.json()
+        }).then((res)=>{
+            console.log(res)
+            // Update the message
+            document.querySelector("#message").innerText = res['message']
+        })
+    })
+</script>
+    
+</body>
+</html>
