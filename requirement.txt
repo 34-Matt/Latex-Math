@@ -11,3 +11,4 @@ tensorboard==2.0.0
 tensorflow==2.0.0
 tensorflow-estimator==2.0.1
 tensorflow-gpu==2.0.0
+flask==1.1.1
