@@ -5,12 +5,14 @@
 #SBATCH --error=err.txt
 
 #SBATCH --ntasks=1
-#SBATCH --time=1:00:00
+#SBATCH --gpus=1
+#SBATCH --time=18:00:00
 
 module purge
 module load apps/python3
-pip install tensorflow==2.0
-pip install numpy
+pip install --user --upgrade tensorflow
+pip install tensorflow-gpu
+pip install --user numpy
 
 
 python TrainCNN.py
