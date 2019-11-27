@@ -4,7 +4,9 @@ import joblib
 import cv2
 import traceback
 
-#from TrainCNN import loadLatestModel
+from Box_Character import Box_Character
+from equationClass import equation
+from TrainCNN import loadLatestModel
 
 app = Flask(__name__)
 model = None
@@ -13,25 +15,35 @@ model = None
 @app.route('/')
 def main():
     return render_template('index.html')
+    
+@app.route('/about')
+def about():
+    return render_template('index.html')
 
 @app.route('/run',methods=["POST"])
 def run():
     global model
     try:
+        # Initialize equation storage
+        LatexEq = equation([],[])
+        
+        # Grab user image
         image = request.files['file'].read()
         arr = cv2.imdecode(np.fromstring(image,np.uint8), cv2.IMREAD_UNCHANGED)
-        my_image = arr / 255.0
         
         # Need to breakup images into parts
+        images = Box_Character(arr)
         
-        #my_image = my_image.reshape(1,45,45,1)
-        #pred = model.predict(my_image)
-            
-        # Need to add prediction to latex format
-        latex = "$Hi Beech$"
+        # Predict each part and append to equation
+        for im in images:
+            im = im.reshape((1,45,45,1))
+            pred = model.predict(im)
+            LatexEq.appendTerm(pred,0)
             
         # Latex format
+        latex = LatexEq.printLatex()
         
+        # Send to webpage
         return jsonify({
             "message": f"Latex Format: {latex}",
             "latex":latex
@@ -48,5 +60,5 @@ def run_ui():
     return render_template("process.html")
 
 if __name__ == '__main__':
-    #model = loadLastestModel((45,45,1),66)
+    model = loadLatestModel((45,45,1),66)
     app.run(debug=True)

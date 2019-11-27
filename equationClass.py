@@ -69,7 +69,7 @@ class equation:
             latex = latex + "}_{"
           
       # Print out term
-      if len(term) > 1 || term == "{" || term == "}":
+      if len(term) > 1 or term == "{" or term == "}":
         # If a special character add the corresponding LaTeX shortcut
         latex = latex + "\\"
       latex = latex + term

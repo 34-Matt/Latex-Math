@@ -27,7 +27,11 @@ def createModel(input,output):
 
     # Images are 48 by 48
     model.add(Conv2D(32, (3,3), activation='relu', input_shape=input)) #46 by 46
-    model.add(Conv2D(32, (3,3), activation='relu')) #44 by 44
+    model.add(MaxPooling2D())
+    model.add(Conv2D(64, (3,3), activation='relu')) #44 by 44
+    model.add(MaxPooling2D())
+    model.add(Conv2D(128, (3,3), activation='relu')) #44 by 44
+    model.add(MaxPooling2D())
     model.add(Dropout(rate=0.15))
     model.add(Flatten()) #1964 by 1
     model.add(Dense(500, activation='relu')) #500 by 1
