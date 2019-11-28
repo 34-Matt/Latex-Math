@@ -6,7 +6,7 @@ import traceback
 
 from Box_Character import Box_Character
 from equationClass import equation
-from TrainCNN import loadLatestModel
+from TrainCNN import loadModel
 
 app = Flask(__name__)
 model = None
@@ -37,7 +37,7 @@ def run():
         # Predict each part and append to equation
         for im in images:
             im = im.reshape((1,45,45,1))
-            pred = model.predict(im)
+            pred = model.predict(im).argmax()
             LatexEq.appendTerm(pred,0)
             
         # Latex format
@@ -60,5 +60,5 @@ def run_ui():
     return render_template("process.html")
 
 if __name__ == '__main__':
-    model = loadLatestModel((45,45,1),66)
+    model = loadModel((45,45,1),66,'training/cp-0016.ckpt.index')
     app.run(debug=True)

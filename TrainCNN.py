@@ -48,6 +48,14 @@ def createModel(input,output):
     
     return model
     
+def loadModel(input,output,fileName=None):
+    if fileName is None:
+        model = loadLatestModel(input,output)
+    else:
+        model = createModel(input,output)
+        model.load_weights(fileName)
+    return model
+    
 def loadLatestModel(input,output):
     model = createModel(input,output) #Currently (45,45,1),65
     latestPath = tf.train.latest_checkpoint('training')
