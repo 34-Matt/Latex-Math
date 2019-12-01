@@ -38,7 +38,7 @@ def createModel(input,output):
     model.add(Dropout(0.2))
     model.add(Dense(250, activation='relu')) #250 by 1
     model.add(Dropout(0.2))
-    model.add(Dense(120, activation='relu')) #120 by 1
+    model.add(Dense(125, activation='relu')) #120 by 1
     model.add(Dropout(0.2))
     model.add(Dense(output, activation='softmax'))
     
@@ -53,6 +53,7 @@ def loadModel(input,output,fileName=None):
         model = loadLatestModel(input,output)
     else:
         model = createModel(input,output)
+        print('Loading weights')
         model.load_weights(fileName)
     return model
     
