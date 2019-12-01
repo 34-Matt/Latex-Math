@@ -81,7 +81,7 @@ def trainModel(model, X_train, y_train, X_test, y_test, ep=50, initial=0):
         batch_size = 100,
         epochs=ep,
         callbacks=[cp_callback],
-        #validation_data=(X_test,y_test),
+        validation_data=(X_test,y_test),
         verbose=2,
         initial_epoch=initial)
         
@@ -90,6 +90,4 @@ def trainModel(model, X_train, y_train, X_test, y_test, ep=50, initial=0):
 if __name__ == "__main__":
     X_train, X_test, y_train, y_test = loadData('X_Y_Data.pickle')
     model = createModel(X_train.shape[1:],66)
-    model = trainModel(model, X_train, y_train, X_test, y_test)
-    loss,act = model.evaluate(X_test,y_test)
-    print(f"\n\nHad and accuracy of {act*100:.2f}% at the end.")
+    model = trainModel(model, X_train, y_train, X_test, y_test,1000)

@@ -5,8 +5,8 @@
 #SBATCH --error=err.txt
 
 #SBATCH --ntasks=1
-#SBATCH --gpus=1
-#SBATCH --time=18:00:00
+#SBATCH --gpus=2
+#SBATCH --time=72:00:00
 
 module purge
 module load apps/python3
