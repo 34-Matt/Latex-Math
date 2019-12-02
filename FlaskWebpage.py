@@ -63,5 +63,5 @@ def run_ui():
     return render_template("process.html")
 
 if __name__ == '__main__':
-    model = loadModel((45,45,1),66,'training/cp-0016.ckpt')
+    model = loadModel((45,45,1),66,'training/cp-0014.ckpt')
     app.run(debug=True)
