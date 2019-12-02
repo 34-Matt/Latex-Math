@@ -23,7 +23,7 @@ class equation:
     assert len(vals) == len(states),'vals and states should be the same size'
     self.terms = vals
     self.states = states
-    characters = loadDict_BA("LabelDict.csv")
+    self.characters = loadDict_BA("LabelDict.csv")
   
   def appendTerm(self, val, state):
     """Append another term onto the end of an existing equation
@@ -45,7 +45,7 @@ class equation:
     prevState = 0
     for index,state in zip(self.terms, self.states):
       # Requires loading of precreated characters array from labeldata
-      term = characters[index]
+      term = self.characters[index]
       
       # Handle sub/superscript with state
       if prevState != state:

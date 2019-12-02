@@ -65,7 +65,7 @@ def loadDict_BA(file_name):
 		readCSV = csv.reader(file)
 		for row in readCSV:
 			if len(row) > 0:
-				dict[row[1]] = int(row[0])
+				dict[int(row[1])] = row[0]
 	return dict
 
 def loadDataset(file_name1,file_name2,rate = 0.2): #file_name1 location of all characters, file_name2 dict

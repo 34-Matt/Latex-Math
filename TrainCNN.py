@@ -54,8 +54,8 @@ def loadModel(input,output,fileName=None):
     if fileName is None:
         model = loadLatestModel(input,output)
     else:
-        #model = createModel(input,output)
-        model = Sequential()
+        model = createModel(input,output)
+        #model = Sequential()
         print('Loading weights')
         model.load_weights(fileName)
     return model

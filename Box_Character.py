@@ -83,8 +83,8 @@ def Box_Character(img):
 	chars_bb.sort()
 
 	# Draw bounding box around character
-	cv2.imshow('image', img)
-	cv2.waitKey(0); cv2.destroyAllWindows(); cv2.waitKey(1)
+	#cv2.imshow('image', img)
+	#cv2.waitKey(0); cv2.destroyAllWindows(); cv2.waitKey(1)
 	# for cnt in chars_bb:
 	# 	min_x = cnt[0]
 	# 	max_x = cnt[2]
@@ -95,7 +95,7 @@ def Box_Character(img):
 		# cv2.waitKey(0); cv2.destroyAllWindows(); cv2.waitKey(1)
 
 	# Save each character as its own image in a vector of images
-	X_input = np.empty((0,45,45),dtype=np.uint8)
+	X_input = np.empty((0,45,45),dtype=np.float16)
 	for cnt in chars_bb:
 		size_x = 45
 		size_y = 45
@@ -122,8 +122,8 @@ def Box_Character(img):
 
 		X_input = np.append(X_input, [img_i],axis = 0) #might need to change
 
-	for x in X_input:
-		cv2.imshow('image', x)
-		cv2.waitKey(0); cv2.destroyAllWindows(); cv2.waitKey(1)
+	#for x in X_input:
+		#cv2.imshow('image', x)
+		#cv2.waitKey(0); cv2.destroyAllWindows(); cv2.waitKey(1)
 
 	return X_input

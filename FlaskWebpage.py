@@ -37,7 +37,10 @@ def run():
         # Predict each part and append to equation
         for im in images:
             im = im.reshape((1,45,45,1))
-            pred = model.predict(im).argmax()
+            preds = model.predict(im)
+            print(preds)
+            pred = preds.argmax()
+            print(pred)
             LatexEq.appendTerm(pred,0)
             
         # Latex format
@@ -60,5 +63,5 @@ def run_ui():
     return render_template("process.html")
 
 if __name__ == '__main__':
-    model = loadModel((45,45,1),66,'training/cp-0396.ckpt.index')
+    model = loadModel((45,45,1),66,'training/cp-0396.ckpt')
     app.run(debug=True)
