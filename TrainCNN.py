@@ -26,23 +26,21 @@ def createModel(input,output):
     model = Sequential()
 
     # Images are 48 by 48
-    model.add(Conv2D(32, (3,3), activation='relu', input_shape=input)) #46 by 46 by 32
-    model.add(Conv2D(64, (5,5), activation='relu')) #42 by 42 by 64
-    model.add(MaxPooling2D((3,3),3)) #14 by 14 by 64
-    model.add(Conv2D(80, (7,7), activation='relu')) #8 by 8 by 80
-    model.add(MaxPooling2D((3,3),3)) #4 by 4 by 80
-    model.add(Dropout(rate=0.1))
-    model.add(Flatten()) #5120 by 1
-    model.add(Dense(2000, activation='relu')) #2000 by 1
-    model.add(Dropout(0.2))
-    model.add(Dense(1000, activation='relu')) #1000 by 1
-    model.add(Dropout(0.15))
+    model.add(Conv2D(32, (3,3), activation='relu', input_shape=input)) #46 by 46
+    model.add(MaxPooling2D())
+    model.add(Conv2D(64, (3,3), activation='relu')) #44 by 44
+    model.add(MaxPooling2D())
+    model.add(Conv2D(128, (3,3), activation='relu')) #44 by 44
+    model.add(MaxPooling2D())
+    model.add(Dropout(rate=0.15))
+    model.add(Flatten()) #1964 by 1
     model.add(Dense(500, activation='relu')) #500 by 1
-    model.add(Dropout(0.15))
+    model.add(Dropout(0.2))
     model.add(Dense(250, activation='relu')) #250 by 1
-    model.add(Dropout(0.1))
-    model.add(Dense(120, activation='relu')) #120 by 1
-    model.add(Dense(output, activation='softmax')) # 82 by 1 (only english, digits, and symbols)
+    model.add(Dropout(0.2))
+    model.add(Dense(125, activation='relu')) #120 by 1
+    model.add(Dropout(0.2))
+    model.add(Dense(66, activation='softmax')) # 66 by 1 (only english, digits, and symbols)
     
     model.compile(optimizer='adam',
                 loss='sparse_categorical_crossentropy',
