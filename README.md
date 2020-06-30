@@ -26,11 +26,11 @@ python FlaskWebpage.py
 
 Once executated, it will create a webpage to run the actual program. The default setting should set it at *http://127.0.0.1:5000*. On the same computer your ran the script, open your default internet browser and go to the running website. 
 
-![Main Page](/Img/MainPage.png)
+![](Img/MainPage.PNG)
 
 Click on the *Predictor* link will send you to the selection page.
 
-![Selection Page](/Img/SelectPage.png)
+![](Img/SelectPage.PNG)
 
 From here, you would search for the equation you wish to represent in Latex and then click *Convert* to return the equation.
 
